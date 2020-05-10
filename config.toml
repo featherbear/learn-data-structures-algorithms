@@ -17,9 +17,6 @@ isHTML = true
 codeFences = false
 
 [params.reveal_hugo]
-controls = true
-controls_tutorial = true
-progress = true
-history = true
 slide_number = true
+history = true
 center = false
