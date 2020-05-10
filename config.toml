@@ -15,3 +15,11 @@ isHTML = true
 
 [markup.highlight]
 codeFences = false
+
+[params.reveal_hugo]
+controls = true
+controls_tutorial = true
+progress = true
+history = true
+slide_number = true
+center = false
