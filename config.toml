@@ -1,0 +1,22 @@
+baseURL = ""
+
+languageCode = "en-au"
+title = "CHANGEME"
+
+theme = "reveal-hugo"
+
+[markup.goldmark.renderer]
+unsafe = true
+
+[outputFormats.Reveal]
+baseName = "index"
+mediaType = "text/html"
+isHTML = true
+
+[markup.highlight]
+codeFences = false
+
+[params.reveal_hugo]
+slide_number = true
+history = true
+center = false
