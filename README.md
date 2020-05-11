@@ -8,6 +8,10 @@ Hugo Slides Template
 * [Create a repository based off the template](https://github.com/featherbear/Slides-Hugo-Template/generate)
 * Create a `PERSONAL_TOKEN` secret for a [personal access token](https://github.com/settings/tokens) with the `repo` scope
 * Clone your new repository
+* Navigate into the repository directory
+* Clone the reveal-hugo theme
+  * `git submodule add git@github.com:dzello/reveal-hugo.git themes/reveal-hugo`
+  * Not sure why this isn't already done automatically...
 * Modify the `config.toml` file to your liking
 * $$$
 
