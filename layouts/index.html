@@ -31,7 +31,7 @@
 
       
       <div class="columns is-desktop is-centered is-multiline is-vcentered">
-        {{ range sort .Pages }}
+        {{ range sort .Site.RegularPages.ByDate }}
         <div class="column is-one-quarter">
           <a href="{{ .Permalink }}">
             <p class="notification is-info">
