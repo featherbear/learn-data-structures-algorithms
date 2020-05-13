@@ -27,13 +27,12 @@
         <div class="content"></div>
     </section>
     <div class="container is-fluid">
-      <div class="control has-icons-left has-icons-right">
+      <div class="control has-icons-left has-icons-right" style="margin-bottom: 10px;">
         <input id="searchFilter" class="input is-rounded" type="text" placeholder="Search for a presentation" value="">
         <span class="icon is-small is-left">
           <i class="fas fa-search"></i>
         </span>
       </div>
-
       <div class="items columns is-desktop is-centered is-multiline is-vcentered">
         {{ range sort .Site.RegularPages.ByDate }}
         <div data-title="{{.Title}}" class="item column is-one-quarter">
