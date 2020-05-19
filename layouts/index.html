@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <title>{{ .Title }}</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
@@ -16,23 +17,25 @@
       defer
       src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"
     ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js"></script>
+    
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/elevator.js/1.0.1/elevator.min.js" integrity="sha256-NrbHsMCpDJ7fPUllFxXcLDonf9mE/GF/VjaL88Qm5Zo=" crossorigin="anonymous"></script> -->
-    <title>{{ .Title }}</title>
   </head>
   <body class="has-navbar-fixed-bottom">
     <section class="section">
-      <div class="container">
         <h1 class="title">{{ .Title }}</h1>
         <div class="content"></div>
-      </div>
     </section>
-    <div class="container">
-      <!-- TODO: Isotope sorting and filtering: title, category -->
-
-      
-      <div class="columns is-desktop is-centered is-multiline is-vcentered">
-        {{ range sort .Pages }}
-        <div class="column is-one-quarter">
+    <div class="container is-fluid">
+      <div class="control has-icons-left has-icons-right" style="margin-bottom: 10px;">
+        <input id="searchFilter" class="input is-rounded" type="text" placeholder="Search for a presentation" value="">
+        <span class="icon is-small is-left">
+          <i class="fas fa-search"></i>
+        </span>
+      </div>
+      <div class="items columns is-desktop is-centered is-multiline is-vcentered">
+        {{ range sort .Site.RegularPages.ByDate }}
+        <div data-title="{{.Title}}" class="item column is-one-quarter">
           <a href="{{ .Permalink }}">
             <p class="notification is-info">
               {{.Title}}
@@ -125,14 +128,51 @@
       </div>
     </nav>
     <script type="text/javascript">
-      let navbar_burger = document.querySelector(".navbar-burger");
+      {
+        let navbar_burger = document.querySelector(".navbar-burger");
 
-      navbar_burger.addEventListener("click", () => {
-        navbar_burger.classList.toggle("is-active");
-        document
-          .getElementById(navbar_burger.dataset.target)
-          .classList.toggle("is-active");
-      });
+        navbar_burger.addEventListener("click", () => {
+          navbar_burger.classList.toggle("is-active");
+          document
+            .getElementById(navbar_burger.dataset.target)
+            .classList.toggle("is-active");
+        });
+      }
+
+      {
+        let isotope = new Isotope('.items', {
+          "itemSelector": ".item",
+          "layoutMode": "fitRows",
+          "transitionDuration": "0.2s",
+          "stagger": 40,
+        });
+
+        function doFilter(query) {
+          let regex = new RegExp(query, 'i');
+          isotope.arrange({filter: (elem) => regex.test(elem.getAttribute('data-title')) })
+        }
+
+        document.getElementById("searchFilter").addEventListener('keyup', (e) => doFilter((window.location.hash = e.target.value)));
+        
+        (window.onhashchange = () => {
+          if ((document.getElementById("searchFilter").value = decodeURI(window.location.hash.substr(1))) != "") {
+           doFilter(document.getElementById("searchFilter").value)
+         }
+        })();
+      }
     </script>
+    <style>
+      @media screen and (max-width:768px) {
+        .item {
+          width: 100%;
+        }
+      }
+      @media screen and (min-width:769px) {
+        .item > a:hover {
+          filter: brightness(90%);
+        }        
+      }
+
+    </style>
   </body>
 </html>
