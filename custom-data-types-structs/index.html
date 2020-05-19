@@ -1,0 +1,70 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><title>Custom Data Types (Structs)</title><meta name=apple-mobile-web-app-capable content=yes><meta name=apple-mobile-web-app-status-bar-style content=black-translucent><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><link rel=stylesheet href=../reveal-js/css/reset.css><link rel=stylesheet href=../reveal-js/css/reveal.css><link rel=stylesheet href=../reveal-js/css/theme/black.css id=theme><link rel=stylesheet href=../highlight-js/default.min.css></head><body><div class=reveal><div class=slides><section data-noprocess data-shortcode-slide class=center><h2 id=custom-data-types-structs>Custom Data Types (Structs)</h2></section><section data-noprocess data-shortcode-slide data-transition=fade><h2 id=custom-data-types-structs-1>Custom Data Types (Structs)</h2><p>All forms of digital data (strings, integers, chars, floats, etc&hellip;) are ultimately all just 1s and 0s in the system.</p><p>Their <em>data type</em> is what allows their binary information to be interpreted in different meanings.</p><span class=fragment>It would be very useful if we were able to define and use our own type definitions</span></section><section data-noprocess data-shortcode-slide data-transition=fade><h2 id=custom-data-types-structs-2>Custom Data Types (Structs)</h2><p>Let&rsquo;s consider some things to define a Person.</p><section data-shortcode-section><p>We would need a name, age, and perhaps an address.</p><pre><code class=language-c>char name[] = &quot;John Citizen&quot;;
+int age = 30;
+char address[] = &quot;1234 Street St&quot;;
+</code></pre></section><section><p>What if we had to define two people?</p><pre><code class=language-c>char name_1[] = &quot;John Citizen&quot;;
+int age_1 = 30;
+char address_1[] = &quot;1234 Street St&quot;;
+
+char name_2[] = &quot;Jane Smith&quot;;
+int age_2 = 25;
+char address_2[] = &quot;555 Main St&quot;;
+</code></pre><p><span class=fragment>This looks like it can grow out of hand&hellip;</span></p></section></section><section data-noprocess data-shortcode-slide data-transition=fade><h2 id=custom-data-types-structs-3>Custom Data Types (Structs)</h2><p>We can create a data structure in C using a <code>struct</code>.</p><blockquote><pre><code class=language-c>struct structure_name {
+    char your;
+    int data;
+    char here[];
+};
+</code></pre></blockquote><span class=fragment><p>For example</p><pre><code class=language-c>struct Person {        // Create a type 'struct Person'
+    char name[30];     // Create a string variable
+    int age;           // Create an age variable
+    char address[100]; // Create an address variable
+};
+</code></pre></section><section><h2 id=aside-structs-vs-class>Aside: Structs vs Class</h2><blockquote><p><code>struct != class</code></p></blockquote><p>In languages that implement the Object Oriented Programming (OOP) paradigm, a struct may look similar to a <code>class</code> or an <code>object</code>.</p><p>A <code>struct</code> is purely a data structure whereas an object is &lsquo;alive&rsquo; and can perform functions. With <code>struct</code>s, it is up to external code to access and modify the data.</p></section><section><h2 id=using-structs>Using structs</h2><blockquote><pre><code class=language-c>struct Person {
+    char name[30];
+    int age;
+    char address[100];
+};
+</code></pre></blockquote><section data-shortcode-section><p>To define a variable with our Person data type</p><blockquote><pre><code class=language-c>struct Person p;
+
+// We can then initialise values  
+p.name = &quot;John Citizen&quot;;
+p.age = 30;
+p.address= &quot;1234 Street St&quot;;
+</code></pre></blockquote></section><section><p>We can also define and assign our values together</p><blockquote><pre><code class=language-c>struct Person p = {
+    .age = 30,
+    .name = &quot;John Citzen&quot;,
+    .address = &quot;1234 Street St&quot;
+};
+</code></pre></blockquote><p>Note: We prepend a <code>.</code> before each variable name</p></section><section><p>If our data values are declared in the same order as they are defined, then we can do this</p><blockquote><pre><code class=language-c>struct Person p = {
+    &quot;John Citzen&quot;, 30, &quot;1234 Street St&quot;
+};
+</code></pre></blockquote></section></section><section><h2 id=accessing-structs>Accessing structs</h2><blockquote><pre><code class=language-c>struct Person p = {
+    .name = &quot;John Citzen&quot;,
+    .age = 30,
+    .address = &quot;1234 Street St&quot;
+};
+</code></pre></blockquote><p>We can access a values from the struct</p><pre><code class=language-c>printf(&quot;Name: %s\n&quot;, p.name); // Output =&gt; Name: John Citizen
+printf(&quot;Age: %d\n&quot;, p.age);   // Output =&gt; Age: 30
+printf(&quot;Name: %s\n&quot;, p.name); // Output =&gt; Address: 1234 Str
+</code></pre></section><section><h2 id=struct-size>Struct Size</h2><p>The size of a struct is the sum of its component sizes.</p><section data-shortcode-section><blockquote><pre><code class=language-c>struct Person {
+    char name[30];
+    int age;
+    char address[100];
+};
+</code></pre></blockquote><p>What is the size of <code>struct Person</code>?</p><p><span class=fragment><code>sizeof(struct Person) == 134</code></span></p></section><section><blockquote><pre><code class=language-c>struct Person {
+    char* name;
+    int age;
+    char* address;
+};
+</code></pre></blockquote><p>What is the size of <code>struct Person</code>?</p><p><span class=fragment><code>sizeof(struct Person) == 12</code></span></p></section></section><section><h2 id=struct-operations>Struct Operations</h2><p>When creating functions that <u>modify</u> <code>struct</code>s, we must remember to <u>pass it by reference</u>.<br>Otherwise changes will not be saved.</p><pre><code class=language-c>// Pass by reference
+void set_age(struct Person *person, int new_age) {
+    person-&gt;age = new_age;   // This is fine
+    (*person).age = new_age; // This is also fine
+}
+</code></pre><pre><code class=language-c>// Pass by value
+void set_age(struct Person person, int new_age) {
+    //                     ^ This is NOT fine!
+    person.age = new_age;
+}
+</code></pre></span></section></div></div><script type=text/javascript src=../reveal-hugo/object-assign.js></script><a href=../reveal-js/css/print/ id=print-location style=display:none></a><script type=text/javascript>var printLocationElement=document.getElementById('print-location');var link=document.createElement('link');link.rel='stylesheet';link.type='text/css';link.href=printLocationElement.href+(window.location.search.match(/print-pdf/gi)?'pdf.css':'paper.css');document.getElementsByTagName('head')[0].appendChild(link);</script><script type=application/json id=reveal-hugo-site-params>{"center":false,"history":true,"pdf_separate_fragments":false,"slide_number":true}</script><script type=application/json id=reveal-hugo-page-params>null</script><script src=../reveal-js/js/reveal.js></script><script type=text/javascript>function camelize(map){if(map){Object.keys(map).forEach(function(k){newK=k.replace(/(\_\w)/g,function(m){return m[1].toUpperCase()});if(newK!=k){map[newK]=map[k];delete map[k];}});}
+return map;}
+var revealHugoDefaults={center:true,controls:true,history:true,progress:true,transition:"slide"};var revealHugoSiteParams=JSON.parse(document.getElementById('reveal-hugo-site-params').innerHTML);var revealHugoPageParams=JSON.parse(document.getElementById('reveal-hugo-page-params').innerHTML);var options=Object.assign({},camelize(revealHugoDefaults),camelize(revealHugoSiteParams),camelize(revealHugoPageParams));Reveal.initialize(options);</script><script type=text/javascript src=../reveal-js/plugin/markdown/marked.js></script><script type=text/javascript src=../reveal-js/plugin/markdown/markdown.js></script><script type=text/javascript src=../reveal-js/plugin/highlight/highlight.js></script><script type=text/javascript src=../reveal-js/plugin/zoom-js/zoom.js></script><script type=text/javascript src=../reveal-js/plugin/notes/notes.js></script><script type=text/javascript>document.title+=" | Data Structures and Algorithms";window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]},svg:{fontCache:'global'}};</script><script type=text/javascript id=MathJax-script async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js></script><script>if(window.location.search.match(/print-pdf/gi)){var link=document.createElement('link');link.rel='stylesheet';link.type='text/css';link.href='reveal.js/css/print/pdf.css';document.getElementsByTagName('head')[0].appendChild(link);}</script></body></html>

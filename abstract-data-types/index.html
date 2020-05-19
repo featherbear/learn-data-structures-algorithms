@@ -1,0 +1,39 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><title>Abstract Data Types</title><meta name=apple-mobile-web-app-capable content=yes><meta name=apple-mobile-web-app-status-bar-style content=black-translucent><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><link rel=stylesheet href=../reveal-js/css/reset.css><link rel=stylesheet href=../reveal-js/css/reveal.css><link rel=stylesheet href=../reveal-js/css/theme/black.css id=theme><link rel=stylesheet href=../highlight-js/default.min.css></head><body><div class=reveal><div class=slides><section data-noprocess data-shortcode-slide class=center><h2 id=abstract-data-types-adt>Abstract Data Types (ADT)</h2></section><section><h2 id=abstract-data-types-adt-1>Abstract Data Types (ADT)</h2><p>An abstract data type is a <code>struct</code>, whose definition is not exposed to the user.</p><span class=fragment><p>This is useful for a couple of different reasons</p><ul><li>Prevents internal data from being modified unsafely</li><li>Provides functions which safely use the struct</li><li>Allows implementation without affecting the user</li></ul></span></section><section><h2 id=abstract-data-types>Abstract Data Types</h2><p>To define an ADT we <code>typedef</code> our <code>struct</code> definition.</p><blockquote><p><code>typedef OLD_TYPE ALIAS;</code></p></blockquote><span class=fragment><p>For example, <code>typedef struct Person Person</code>.<br>This will make <code>Person</code> an alias of <code>struct person</code>.</p></span><span class=fragment><p>By doing so, we have successfully abstracted the <code>Person</code> type. We would use <code>Person</code> for future uses.</p><pre><code class=language-c>Person p = { ... };
+</code></pre></span></section><section><h2 id=adt-to-pointers>ADT to Pointers</h2><p>As it is very common to pass <u>data by reference</u>, it is recommended to make ADT definitions a pointer.</p><blockquote><pre><code class=language-c>typedef struct Person *Person;
+</code></pre></blockquote><p>This way whenever we use <code>Person</code>, we are defining a pointer to a <code>struct Person</code>.</p><span class=fragment>If we do not use a pointer type, we must ensure to manually pass reference to our data type in functions, and dereference them when accessing values</span></section><section><h2 id=better-adts>Better ADTs</h2><section data-shortcode-section><p>To make an ADT truly abstract, we want to put all ADT code in their own <code>.h</code> header and <code>.c</code> source files.</p><p><code>Person.h</code></p><pre><code class=language-c>#ifndef _PERSON_H_
+#define _PERSON_H_
+typedef struct Person *Person; // Define Person as a pointer
+#endif                         // to a struct Person
+</code></pre><p><code>Person.c</code></p><pre><code class=language-c>struct Person {
+    char* name;
+    int age;
+    char* address;
+};
+</code></pre></section><section><p>We put the function prototypes in the <code>.h</code> header, and implementation in the <code>.c</code> source.</p><pre><code class=language-c>/* Person.h */
+typedef struct Person *Person;
+char *get_name(Person p);
+int get_age(Person p);
+</code></pre><pre><code class=language-c>/* Person.c */
+#include &lt;string.h&gt;
+
+char *get_name(struct Person *p) {
+    return (p == NULL || p-&gt;name == NULL)
+           ? NULL : strdup(p-&gt;name0);
+}
+int get_age(struct Person *p) {
+    return p-&gt;age;
+}
+</code></pre></section><section><p>Without knowing the content of the <code>.c</code> source file, we can use the functions declared in the header.</p><blockquote><pre><code class=language-c>/* Person.h */
+typedef struct Person *Person;
+char *get_name(Person p);
+int get_age(Person p);
+</code></pre></blockquote><pre><code class=language-c>#include &lt;Person.h&gt;
+
+int main(void) {
+    Person p = ...;
+
+    printf(&quot;Age: %d\n&quot;, get_age(p));
+}
+</code></pre></section></section></div></div><script type=text/javascript src=../reveal-hugo/object-assign.js></script><a href=../reveal-js/css/print/ id=print-location style=display:none></a><script type=text/javascript>var printLocationElement=document.getElementById('print-location');var link=document.createElement('link');link.rel='stylesheet';link.type='text/css';link.href=printLocationElement.href+(window.location.search.match(/print-pdf/gi)?'pdf.css':'paper.css');document.getElementsByTagName('head')[0].appendChild(link);</script><script type=application/json id=reveal-hugo-site-params>{"center":false,"history":true,"pdf_separate_fragments":false,"slide_number":true}</script><script type=application/json id=reveal-hugo-page-params>null</script><script src=../reveal-js/js/reveal.js></script><script type=text/javascript>function camelize(map){if(map){Object.keys(map).forEach(function(k){newK=k.replace(/(\_\w)/g,function(m){return m[1].toUpperCase()});if(newK!=k){map[newK]=map[k];delete map[k];}});}
+return map;}
+var revealHugoDefaults={center:true,controls:true,history:true,progress:true,transition:"slide"};var revealHugoSiteParams=JSON.parse(document.getElementById('reveal-hugo-site-params').innerHTML);var revealHugoPageParams=JSON.parse(document.getElementById('reveal-hugo-page-params').innerHTML);var options=Object.assign({},camelize(revealHugoDefaults),camelize(revealHugoSiteParams),camelize(revealHugoPageParams));Reveal.initialize(options);</script><script type=text/javascript src=../reveal-js/plugin/markdown/marked.js></script><script type=text/javascript src=../reveal-js/plugin/markdown/markdown.js></script><script type=text/javascript src=../reveal-js/plugin/highlight/highlight.js></script><script type=text/javascript src=../reveal-js/plugin/zoom-js/zoom.js></script><script type=text/javascript src=../reveal-js/plugin/notes/notes.js></script><script type=text/javascript>document.title+=" | Data Structures and Algorithms";window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]},svg:{fontCache:'global'}};</script><script type=text/javascript id=MathJax-script async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js></script><script>if(window.location.search.match(/print-pdf/gi)){var link=document.createElement('link');link.rel='stylesheet';link.type='text/css';link.href='reveal.js/css/print/pdf.css';document.getElementsByTagName('head')[0].appendChild(link);}</script></body></html>
