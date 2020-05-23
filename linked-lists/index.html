@@ -1,0 +1,287 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><title>Linked Lists</title><meta name=apple-mobile-web-app-capable content=yes><meta name=apple-mobile-web-app-status-bar-style content=black-translucent><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><link rel=stylesheet href=../reveal-js/css/reset.css><link rel=stylesheet href=../reveal-js/css/reveal.css><link rel=stylesheet href=../reveal-js/css/theme/black.css id=theme><link rel=stylesheet href=../highlight-js/default.min.css></head><body><div class=reveal><div class=slides><section data-noprocess data-shortcode-slide class=center><h2 id=linked-lists>Linked Lists</h2></section><section><h2 id=linked-lists-1>Linked Lists</h2><p>A linked list is a data structure, where a sequence of values is scattered throughout the memory, but is still contiguous to the user.</p></section><section><h2 id=why-linked-lists>Why Linked Lists</h2><section data-shortcode-section><p><em>Managing memory is important to program efficiency.</em></p><table><thead><tr><th align=right></th><th align=center>Linked List</th><th align=center>Array</th></tr></thead><tbody><tr><td align=right>Overhead</td><td align=center>Little</td><td align=center><u><strong><em>None</em></strong></u></td></tr><tr><td align=right>Access</td><td align=center>Sequential</td><td align=center><u><strong><em>Random</em></strong></u></td></tr><tr><td align=right>Size</td><td align=center><u><strong><em>Variable</em></strong></u></td><td align=center>Fixed</td></tr><tr><td align=right>Expansion</td><td align=center><u><strong><em>Cheap</em></strong></u></td><td align=center>Expensive</td></tr></tbody></table></section><p><section data-noprocess data-shortcode-slide data-transition=fade></p><h3 id=array-expansion-low-load>Array Expansion (Low Load)</h3><blockquote><pre><code>|X|X|X| | | | | | | | | | | | | | | | | | |
+</code></pre></blockquote><pre><code class=language-c>char *X = malloc(3); // Allocate 3 bytes for X
+X = realloc(X, 5); // Request 5 bytes for X
+</code></pre><blockquote><pre><code>|X|X|X|X|X| | | | | | | | | | | | | | | | |
+</code></pre></blockquote><p>The additional two bytes were assigned in place, good.</p></section><p><section data-noprocess data-shortcode-slide data-transition=fade></p><h3 id=array-expansion-medium-load>Array Expansion (Medium Load)</h3><blockquote><pre><code>|X|X|X|O|O|O|O|O| | | | | | | | | | | | | |
+</code></pre></blockquote><pre><code class=language-c>char *X = malloc(3); // Allocate 3 bytes for X
+char *O = malloc(5); // Allocate 5 bytes for O
+X = realloc(X, 5); // Request 5 bytes for X
+</code></pre><blockquote><pre><code>| | | |O|O|O|O|O|X|X|X|X|X| | | | | | | | |
+</code></pre></blockquote><p>The original location did not have enough free contiguous space. Location was moved.<br>Data has to be copied to the new location.</p></section><p><section data-noprocess data-shortcode-slide data-transition=fade></p><h3 id=array-expansion-high-load>Array Expansion (High Load)</h3><blockquote><pre><code>|X|X|X|O|O|O|O|O|O|O|O|O|O|O|O|O|O| | | | |
+</code></pre></blockquote><pre><code class=language-c>char *X = malloc(3); // Allocate 3 bytes for X
+char *O = malloc(14); // Allocate 14 bytes for O
+X = realloc(X, 5); // Request 5 bytes for X
+// Program Crash!
+</code></pre><p>The original location did not have enough free contiguous space. There is no other memory location that has enough free contiguous space.</p><p>The program will crash!</p></section><p><section data-noprocess data-shortcode-slide data-transition=fade></p><h3 id=linked-list-expansion-high-load>Linked List Expansion (High Load)</h3><blockquote><pre><code>|X|x|X|x|O|O|O|O|O|O|O|O| | |Y| | |Z|Z| | |
+</code></pre></blockquote><pre><code class=language-c>LinkedList X = new_linked_list(2); // Create a linked list
+char *O = malloc(8); // Allocate 8 bytes for O
+char *Y = malloc(1); // Allocate 1 byte for Y
+char *Z = malloc(2); // Allocate 2 bytes for Z
+add_nodes(X, 3); // Request 3 more nodes for X
+</code></pre><blockquote><pre><code>|X|x|X|x|O|O|O|O|O|O|O|O|X|x|Y|X|x|Z|Z|X|x|
+</code></pre></blockquote><p>With a linked list, our data does not need to be stored in the same location.</p></section><section><p>Use arrays when you have a finite number of items.</p><p>Use linked lists when you have a dynamic amount.</p></section></section><section><h2 id=basic-structure>Basic Structure</h2><section data-shortcode-section><pre><code class=language-c>struct LinkedList {
+  struct LinkedList_Node *head;
+};
+
+struct LinkedList_Node {
+  int value;
+  struct LinkedList_Node *next;
+};
+
+/* ... */
+struct LinkedList *createLinkedList();
+struct LinkedList_Node *createLinkedListNode(int value);
+</code></pre><p>We define <code>struct LinkedList</code> to be a container which keeps track of the start of the list. We also define <code>struct LinkedList_Node</code> which contains the node&rsquo;s value, and a pointer to the next node.</p></section><section><pre><code class=language-c>typedef struct LinkedList {
+  LinkedListNode *head;
+} LinkedList;
+
+typedef struct LinkedList_Node {
+  int value;
+  LinkedListNode *next;
+} LinkedListNode;
+
+/* ... */
+LinkedList *createLinkedList();
+LinkedListNode *createLinkedListNode(int value);
+</code></pre><p>Using <code>typedef</code>s, we can reduce redundancy and make our code more succinct.</p></section><section><pre><code class=language-c>typedef struct LinkedList_Node *LinkedListNode;
+struct LinkedList_Node {
+  int value;
+  LinkedListNode next;
+};
+
+typedef struct LinkedList {
+  LinkedListNode head;
+} *LinkedList;
+
+/* ... */
+LinkedList createLinkedList();
+LinkedListNode createLinkedListNode(int value);
+</code></pre><p>We can <code>typedef</code> our <code>LinkedListNode</code> and <code>LinkedList</code> to be pointers to their struct types.</p></section></section><section><h2 id=linked-list-operations>Linked List Operations</h2></section><section><h2 id=container-initialisation>Container Initialisation</h2><pre><code class=language-c>LinkedList *createLinkedList() {
+    // Allocate the memory for just the container
+    LinkedList container = malloc(sizeof(*container));
+    if (container == NULL) return;
+
+    // Initialise values
+    container-&gt;next = NULL;
+
+    // Give the address of the LinkedList container
+    return container;
+}
+</code></pre><pre><code class=language-c>int main() {
+    LinkedList list = createLinkedList();
+}
+</code></pre></section><section><h2 id=node-initialisation>Node Initialisation</h2><pre><code class=language-c>LinkedListNode *createLinkedListNode(int data) {
+    // Allocate the memory for the node
+    LinkedListNode node = malloc(sizeof(*node));
+    if (container == NULL) return;
+
+    // Initialise values
+    node-&gt;value = data;
+    node-&gt;next = NULL;
+
+    // Give the address of the LinkedListNode
+    return node;
+}
+</code></pre><pre><code class=language-c>int main() {
+    LinkedList list = createLinkedList();
+    LinkedListNode node = createLinkedListNode(5);
+}
+</code></pre></section><section><h2 id=insertion>Insertion</h2><section data-shortcode-section><pre><code class=language-c>void LinkedListInsert(LinkedList container, int data) {
+    // Check that the container exists
+    /* ... */
+
+    // Create the LinkedListNode (also check for error)
+    /* ... */
+
+    // Add the LinkedListNode to the end of container
+    /* ... */
+    // ... What if the container is empty?
+    // ... What if the container has one item?
+    // ... What if the container has two items?
+    // ... What if the container has n items?
+}
+</code></pre></section><section><pre><code class=language-c>void LinkedListInsert(LinkedList container, int data) {
+    // Check that the container exists
+    if (container == NULL) return;
+
+    // Create the LinkedListNode (also check for error)
+    LinkedList node = createLinkedListNode(data);
+    if (node == NULL) return;
+
+    // Add the LinkedListNode to the end of the container
+    if (container-&gt;head == NULL) {
+        container-&gt;head = cur;
+        return;
+    }
+
+    // Find the last node in the Linked List
+    LinkedListNode cur = container-&gt;head;
+    while (cur-&gt;next != NULL) {
+        cur = cur-&gt;next;
+    }
+
+    // Reassign the last node to point to our new node
+    cur-&gt;next = node;
+}
+</code></pre></section></section><section><h2 id=count>Count</h2><pre><code class=language-c>int LinkedListCount(LinkedList container) {
+    // Check that the container exists
+    if (container == NULL) return -1;
+    
+    int count = 0;
+    LinkedListNode cur = container-&gt;head;
+    while (cur) {
+        // For each node, increment the count
+        count++;
+        cur = cur-&gt;next;
+    }
+
+    return count;
+}
+</code></pre></section><section><h2 id=search>Search</h2><pre><code class=language-c>boolean LinkedListSearch(LinkedList container, int data) {
+    if (container == NULL) return false;
+
+    LinkedListNode cur = container-&gt;head;
+    while (cur) {
+        // Return true if the node matches the data
+        if (cur-&gt;value == data) {
+            return true;
+        }
+        cur = cur-&gt;next;
+    }
+
+    return false;
+}
+</code></pre></section><section data-noprocess data-shortcode-slide data-transition=fade><h2 id=deletion-by-value>Deletion by Value</h2><p>Delete one node with the value in <code>data</code></p><pre><code class=language-c>boolean LinkedListNodeDeleteByVal(LinkedList container, int data) {
+    if (container == NULL) return false;
+
+    LinkedListNode cur = container-&gt;head;
+    LinkedListNode prev = NULL;
+    while (cur) {
+        if (cur-&gt;value == data) {
+            if (prev == NULL) {
+                container-&gt;head = cur-&gt;next;
+            } else {
+                prev-&gt;next = cur-&gt;next;
+            }
+            free(cur);
+            return true;
+        }
+        prev = cur;
+        cur = cur-&gt;next;
+    }
+
+    return false;
+}
+</code></pre></section><section><h2 id=deletion-by-value-all>Deletion by Value (All)</h2><p>Delete one node with the value in <code>data</code></p><pre><code class=language-c>void LinkedListNodeDeleteByVal(LinkedList container, int data) {
+    if (container == NULL) return;
+
+    LinkedListNode cur = container-&gt;head;
+    LinkedListNode prev = NULL;
+    while (cur) {
+        if (cur-&gt;value == data) {
+            if (prev == NULL) {
+                container-&gt;head = cur-&gt;next;
+            } else {
+                prev-&gt;next = cur-&gt;next;
+            }
+            free(cur);
+        }
+        prev = prev-&gt;next;
+        cur = prev-&gt;next;
+    }
+}
+</code></pre></section><section><h2 id=deletion-by-node>Deletion by Node</h2><pre><code class=language-c>boolean LinkedListNodeDeleteByNode(LinkedList container, LinkedListNode node) {
+    if (container == NULL) return;
+    if (node == NULL) return;
+
+    if (container-&gt;head == node) {
+        container-&gt;head = node-&gt;next;
+        free(node);
+        return true;
+    }
+
+    LinkedListNode cur = container-&gt;head;
+    while (cur) {
+        if (cur-&gt;next == node) {
+            cur-&gt;next = node-&gt;next;
+            free(node);
+            return true;
+        }
+        cur = cur-&gt;next;
+    }
+
+    return false;
+}
+</code></pre></section><section><h2 id=destruction>Destruction</h2><section data-shortcode-section><pre><code class=language-c>void LinkedListFree(LinkedList container) {
+    if (container == NULL) return;
+
+    LinkedListNode cur = container-&gt;head;
+    while(cur) {
+        LinkedListNode next = cur-&gt;next;
+        free(cur);
+        cur = next;
+    }
+
+    free(container);
+}
+</code></pre></section><section><pre><code class=language-c>void BAD_LinkedListFree(LinkedList container) {
+    if (container == NULL) return;
+
+    LinkedListNode cur = container-&gt;head;
+    while(cur) {
+        free(cur);
+        cur = cur-&gt;next;
+    }
+
+    free(container);
+}
+</code></pre><p>Why shouldn&rsquo;t we do it this way?</p><p><span class=fragment>As we&rsquo;ve released the memory for <code>cur</code>,<br><code>cur-&gt;next</code> will be gibberish</span></p></section></section><section><h2 id=sort>Sort</h2><p>// Under construction</p></section><section><h2 id=complexity-analysis>Complexity Analysis</h2><p>// Calculate these!</p></section><section><h2 id=improved-structure>Improved Structure</h2><pre><code class=language-c>typedef struct LinkedList_Node *LinkedListNode;
+struct LinkedList_Node {
+  int value;
+  LinkedListNode next;
+};
+
+typedef struct LinkedList {
+  LinkedListNode head;
+  LinkedListNode tail;
+  int count;
+} *LinkedList;
+
+/* ... */
+LinkedList createLinkedList();
+LinkedListNode createLinkedListNode(int value);
+</code></pre></section><section><h2 id=improved-initialisation>Improved Initialisation</h2><pre><code class=language-c>LinkedList createLinkedList() {
+    LinkedList container = malloc(sizeof(*container));
+    container-&gt;head = NULL;
+    container-&gt;tail = NULL;
+    container-&gt;size = 0;
+    return container;
+}
+</code></pre><h2 id=improved-insertion>Improved Insertion</h2><pre><code class=language-c>
+void LinkedListInsert(LinkedList container, int data) {
+    if (container == NULL) return;
+
+    LinkedList node = createLinkedListNode(data);
+    if (node == NULL) return;
+
+    container-&gt;count++;
+
+    // Add the LinkedListNode to the end of the container
+    if (container-&gt;head == NULL) {
+        container-&gt;head = cur;
+        container-&gt;tail = cur;
+        return;
+    }
+
+    container-&gt;tail-&gt;next = node;
+    container-&gt;tail = node;
+}
+</code></pre><h2 id=improved-count>Improved Count</h2><pre><code class=language-c>int LinkedListCount(LinkedList container) {
+    // Check that the container exists
+    if (container == NULL) return -1;
+
+    return container-&gt;count;
+}
+</code></pre></section><section></section></div></div><script type=text/javascript src=../reveal-hugo/object-assign.js></script><a href=../reveal-js/css/print/ id=print-location style=display:none></a><script type=text/javascript>var printLocationElement=document.getElementById('print-location');var link=document.createElement('link');link.rel='stylesheet';link.type='text/css';link.href=printLocationElement.href+(window.location.search.match(/print-pdf/gi)?'pdf.css':'paper.css');document.getElementsByTagName('head')[0].appendChild(link);</script><script type=application/json id=reveal-hugo-site-params>{"center":false,"history":true,"pdf_separate_fragments":false,"slide_number":true}</script><script type=application/json id=reveal-hugo-page-params>null</script><script src=../reveal-js/js/reveal.js></script><script type=text/javascript>function camelize(map){if(map){Object.keys(map).forEach(function(k){newK=k.replace(/(\_\w)/g,function(m){return m[1].toUpperCase()});if(newK!=k){map[newK]=map[k];delete map[k];}});}
+return map;}
+var revealHugoDefaults={center:true,controls:true,history:true,progress:true,transition:"slide"};var revealHugoSiteParams=JSON.parse(document.getElementById('reveal-hugo-site-params').innerHTML);var revealHugoPageParams=JSON.parse(document.getElementById('reveal-hugo-page-params').innerHTML);var options=Object.assign({},camelize(revealHugoDefaults),camelize(revealHugoSiteParams),camelize(revealHugoPageParams));Reveal.initialize(options);</script><script type=text/javascript src=../reveal-js/plugin/markdown/marked.js></script><script type=text/javascript src=../reveal-js/plugin/markdown/markdown.js></script><script type=text/javascript src=../reveal-js/plugin/highlight/highlight.js></script><script type=text/javascript src=../reveal-js/plugin/zoom-js/zoom.js></script><script type=text/javascript src=../reveal-js/plugin/notes/notes.js></script><script type=text/javascript>document.title+=" | Data Structures and Algorithms";window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]},svg:{fontCache:'global'}};</script><script type=text/javascript id=MathJax-script async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js></script><script>if(window.location.search.match(/print-pdf/gi)){var link=document.createElement('link');link.rel='stylesheet';link.type='text/css';link.href='reveal.js/css/print/pdf.css';document.getElementsByTagName('head')[0].appendChild(link);}</script></body></html>
