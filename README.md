@@ -6,7 +6,6 @@ Hugo Slides Template
 # Getting Started
 
 * [Create a repository based off the template](https://github.com/featherbear/Slides-Hugo-Template/generate)
-* Create a `PERSONAL_TOKEN` secret for a [personal access token](https://github.com/settings/tokens) with the `repo` scope
 * Clone your new repository
 * Navigate into the repository directory
 * Clone the reveal-hugo theme
