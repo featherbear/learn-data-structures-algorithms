@@ -146,7 +146,8 @@
           "transitionDuration": "0.2s",
           "stagger": 40,
         });
-
+        isotope.arrange()
+        
         function doFilter(query) {
           let regex = new RegExp(query, 'i');
           isotope.arrange({filter: (elem) => regex.test(elem.getAttribute('data-title')) })
