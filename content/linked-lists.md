@@ -2,7 +2,7 @@
 title: "Linked Lists"
 layout: "bundle"
 outputs: ["Reveal"]
-date: 2020-05-19T23:16:30+10:00
+date: 2020-05-19T23:36:32+10:00
 ---
 
 {{< slide class="center" >}}
@@ -13,7 +13,9 @@ date: 2020-05-19T23:16:30+10:00
 
 ## Linked Lists
 
-A linked list is a data structure, where a sequence of values is scattered throughout the memory, but is still contiguous to the user.
+A linked list is a data structure, where a sequence of values is scattered throughout the memory, but is still contiguous to the user.  
+
+They are used in the implementation of other data structures (i.e. Stacks and Queues)
 
 ---
 
@@ -193,8 +195,14 @@ We can `typedef` our `LinkedListNode` and `LinkedList` to be pointers to their s
 
 ---
 
-
 ## Linked List Operations
+
+* Create / Destroy
+* Insert
+* Search
+* Delete
+* Sort
+* Count
 
 ---
 
@@ -475,13 +483,22 @@ Why shouldn't we do it this way?
 
 ## Sort
 
-// Under construction
+* Bubble Sort (By changing value)
+* Bubble Sort (By changing reference)
+
+---
+
+## Merge
+
+Implement a linked list function that merges two linked lists together.
 
 ---
 
 ## Complexity Analysis
 
 // Calculate these!
+
+<!-- It's O(n) for most operations, O(1) for insertion and deletion -->
 
 ---
 
