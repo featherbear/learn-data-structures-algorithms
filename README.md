@@ -10,7 +10,7 @@ Hugo Slides Template
 * Navigate into the repository directory
 * Clone the reveal-hugo theme
   * `git submodule add git@github.com:dzello/reveal-hugo.git themes/reveal-hugo`
-  * Not sure why this isn't already done automatically...
+  * GitHub templates don't replicate the git module structures
 * Modify the `config.toml` file to your liking
 * $$$
 
