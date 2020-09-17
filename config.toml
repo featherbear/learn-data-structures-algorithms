@@ -4,6 +4,9 @@ languageCode = "en-au"
 relativeURLs = true
 theme = "reveal-hugo"
 
+[params]
+colouriseSections = true
+
 [markup.goldmark.renderer]
 unsafe = true
 
