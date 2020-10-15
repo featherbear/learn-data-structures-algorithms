@@ -1,25 +1,61 @@
-<!doctype html><html lang=en><head><meta charset=utf-8><title>Linked Lists</title><meta name=apple-mobile-web-app-capable content=yes><meta name=apple-mobile-web-app-status-bar-style content=black-translucent><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><link rel=stylesheet href=../reveal-js/css/reset.css><link rel=stylesheet href=../reveal-js/css/reveal.css><link rel=stylesheet href=../reveal-js/css/theme/black.css id=theme><link rel=stylesheet href=../highlight-js/default.min.css></head><body><div class=reveal><div class=slides><section data-noprocess data-shortcode-slide class=center><h2 id=linked-lists>Linked Lists</h2></section><section><h2 id=linked-lists-1>Linked Lists</h2><p>A linked list is a data structure, where a sequence of values is scattered throughout the memory, but is still contiguous to the user.</p><p>They are used in the implementation of other data structures (i.e. Stacks and Queues)</p></section><section><h2 id=why-linked-lists>Why Linked Lists</h2><section data-shortcode-section><p><em>Managing memory is important to program efficiency.</em></p><table><thead><tr><th align=right></th><th align=center>Linked List</th><th align=center>Array</th></tr></thead><tbody><tr><td align=right>Overhead</td><td align=center>Little</td><td align=center><u><strong><em>None</em></strong></u></td></tr><tr><td align=right>Access</td><td align=center>Sequential</td><td align=center><u><strong><em>Random</em></strong></u></td></tr><tr><td align=right>Size</td><td align=center><u><strong><em>Variable</em></strong></u></td><td align=center>Fixed</td></tr><tr><td align=right>Expansion</td><td align=center><u><strong><em>Cheap</em></strong></u></td><td align=center>Expensive</td></tr></tbody></table></section><p><section data-noprocess data-shortcode-slide data-transition=fade></p><h3 id=array-expansion-low-load>Array Expansion (Low Load)</h3><blockquote><pre><code>|X|X|X| | | | | | | | | | | | | | | | | | |
-</code></pre></blockquote><pre><code class=language-c>char *X = malloc(3); // Allocate 3 bytes for X
+<!doctype html><html lang=en><head><meta charset=utf-8><title>Linked Lists</title><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="black-translucent"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><link rel=stylesheet href=../reveal-js/css/reset.css><link rel=stylesheet href=../reveal-js/css/reveal.css><link rel=stylesheet href=../reveal-js/css/theme/black.css id=theme><link rel=stylesheet href=../highlight-js/default.min.css></head><body><div class=reveal><div class=slides><section data-noprocess data-shortcode-slide class=center><h2 id=linked-lists>Linked Lists</h2></section><section><h2 id=linked-lists-1>Linked Lists</h2><p>A linked list is a data structure, where a sequence of values is scattered throughout the memory, but is still contiguous to the user.</p><p>They are used in the implementation of other data structures (i.e. Stacks and Queues)</p></section><section><h2 id=why-linked-lists>Why Linked Lists</h2><section data-shortcode-section><p><em>Managing memory is important to program efficiency.</em></p><table><thead><tr><th align=right></th><th align=center>Linked List</th><th align=center>Array</th></tr></thead><tbody><tr><td align=right>Overhead</td><td align=center>Little</td><td align=center><u><em><strong>None</strong></em></u></td></tr><tr><td align=right>Access</td><td align=center>Sequential</td><td align=center><u><em><strong>Random</strong></em></u></td></tr><tr><td align=right>Size</td><td align=center><u><em><strong>Variable</strong></em></u></td><td align=center>Fixed</td></tr><tr><td align=right>Expansion</td><td align=center><u><em><strong>Cheap</strong></em></u></td><td align=center>Expensive</td></tr></tbody></table></section><section data-noprocess data-shortcode-slide data-transition=fade><h3 id=array-expansion-low-load>Array Expansion (Low Load)</h3><blockquote><pre><code></code></pre></blockquote><p>|X|X|X| | | | | | | | | | | | | | | | | | |</p><pre><code>
+```c
+char *X = malloc(3); // Allocate 3 bytes for X
 X = realloc(X, 5); // Request 5 bytes for X
-</code></pre><blockquote><pre><code>|X|X|X|X|X| | | | | | | | | | | | | | | | |
-</code></pre></blockquote><p>The additional two bytes were assigned in place, good.</p></section><p><section data-noprocess data-shortcode-slide data-transition=fade></p><h3 id=array-expansion-medium-load>Array Expansion (Medium Load)</h3><blockquote><pre><code>|X|X|X|O|O|O|O|O| | | | | | | | | | | | | |
-</code></pre></blockquote><pre><code class=language-c>char *X = malloc(3); // Allocate 3 bytes for X
+</code></pre><blockquote><pre><code></code></pre></blockquote><p>|X|X|X|X|X| | | | | | | | | | | | | | | | |</p><pre><code>
+The additional two bytes were assigned in place, good.
+
+---
+
+
+&lt;section data-noprocess data-shortcode-slide
+      data-transition=&quot;fade&quot;&gt;
+  
+
+### Array Expansion (Medium Load)
+
+&gt; ```
+|X|X|X|O|O|O|O|O| | | | | | | | | | | | | |
+</code></pre><pre><code class=language-c>char *X = malloc(3); // Allocate 3 bytes for X
 char *O = malloc(5); // Allocate 5 bytes for O
 X = realloc(X, 5); // Request 5 bytes for X
-</code></pre><blockquote><pre><code>| | | |O|O|O|O|O|X|X|X|X|X| | | | | | | | |
-</code></pre></blockquote><p>The original location did not have enough free contiguous space. Location was moved.<br>Data has to be copied to the new location.</p></section><p><section data-noprocess data-shortcode-slide data-transition=fade></p><h3 id=array-expansion-high-load>Array Expansion (High Load)</h3><blockquote><pre><code>|X|X|X|O|O|O|O|O|O|O|O|O|O|O|O|O|O| | | | |
-</code></pre></blockquote><pre><code class=language-c>char *X = malloc(3); // Allocate 3 bytes for X
+</code></pre><blockquote><pre><code></code></pre></blockquote><p>| | | |O|O|O|O|O|X|X|X|X|X| | | | | | | | |</p><pre><code>
+The original location did not have enough free contiguous space. Location was moved.  
+Data has to be copied to the new location.
+
+---
+
+
+&lt;section data-noprocess data-shortcode-slide
+      data-transition=&quot;fade&quot;&gt;
+  
+
+### Array Expansion (High Load)
+
+&gt; ```
+|X|X|X|O|O|O|O|O|O|O|O|O|O|O|O|O|O| | | | |
+</code></pre><pre><code class=language-c>char *X = malloc(3); // Allocate 3 bytes for X
 char *O = malloc(14); // Allocate 14 bytes for O
 X = realloc(X, 5); // Request 5 bytes for X
 // Program Crash!
-</code></pre><p>The original location did not have enough free contiguous space. There is no other memory location that has enough free contiguous space.</p><p>The program will crash!</p></section><p><section data-noprocess data-shortcode-slide data-transition=fade></p><h3 id=linked-list-expansion-high-load>Linked List Expansion (High Load)</h3><blockquote><pre><code>|X|x|X|x|O|O|O|O|O|O|O|O| | |Y| | |Z|Z| | |
-</code></pre></blockquote><pre><code class=language-c>LinkedList X = new_linked_list(2); // Create a linked list
+</code></pre><p>The original location did not have enough free contiguous space. There is no other memory location that has enough free contiguous space.</p><p>The program will crash!</p></section><section data-noprocess data-shortcode-slide data-transition=fade><h3 id=linked-list-expansion-high-load>Linked List Expansion (High Load)</h3><blockquote><pre><code></code></pre></blockquote><p>|X|x|X|x|O|O|O|O|O|O|O|O| | |Y| | |Z|Z| | |</p><pre><code>
+```c
+LinkedList X = new_linked_list(2); // Create a linked list
 char *O = malloc(8); // Allocate 8 bytes for O
 char *Y = malloc(1); // Allocate 1 byte for Y
 char *Z = malloc(2); // Allocate 2 bytes for Z
 add_nodes(X, 3); // Request 3 more nodes for X
-</code></pre><blockquote><pre><code>|X|x|X|x|O|O|O|O|O|O|O|O|X|x|Y|X|x|Z|Z|X|x|
-</code></pre></blockquote><p>With a linked list, our data does not need to be stored in the same location.</p></section><section><p>Use arrays when you have a finite number of items.</p><p>Use linked lists when you have a dynamic amount.</p></section></section><section><h2 id=basic-structure>Basic Structure</h2><section data-shortcode-section><pre><code class=language-c>struct LinkedList {
+</code></pre><blockquote><pre><code></code></pre></blockquote><p>|X|x|X|x|O|O|O|O|O|O|O|O|X|x|Y|X|x|Z|Z|X|x|</p><pre><code>
+With a linked list, our data does not need to be stored in the same location.
+
+---
+
+Use arrays when you have a finite number of items.  
+
+Use linked lists when you have a dynamic amount.
+
+
+</code></pre></section></section><section><h2 id=basic-structure>Basic Structure</h2><section data-shortcode-section><pre><code class=language-c>struct LinkedList {
   struct LinkedList_Node *head;
 };
 
@@ -235,7 +271,7 @@ LinkedListNode createLinkedListNode(int value);
 
     free(container);
 }
-</code></pre><p>Why shouldn&rsquo;t we do it this way?</p><p><span class=fragment>As we&rsquo;ve released the memory for <code>cur</code>,<br><code>cur-&gt;next</code> will be gibberish</span></p></section></section><section><h2 id=sort>Sort</h2><ul><li>Bubble Sort (By changing value)</li><li>Bubble Sort (By changing reference)</li></ul></section><section><h2 id=merge>Merge</h2><p>Implement a linked list function that merges two linked lists together.</p></section><section><h2 id=complexity-analysis>Complexity Analysis</h2><p>// Calculate these!</p></section><section><h2 id=improved-structure>Improved Structure</h2><pre><code class=language-c>typedef struct LinkedList_Node *LinkedListNode;
+</code></pre><p>Why shouldn&rsquo;t we do it this way?</p><p>&lt;span class='fragment '</p><blockquote></blockquote><p>As we’ve released the memory for <code>cur</code>,<br><code>cur->next</code> will be gibberish</span></p></section></section><section><h2 id=sort>Sort</h2><ul><li>Bubble Sort (By changing value)</li><li>Bubble Sort (By changing reference)</li></ul></section><section><h2 id=merge>Merge</h2><p>Implement a linked list function that merges two linked lists together.</p></section><section><h2 id=complexity-analysis>Complexity Analysis</h2><p>// Calculate these!</p></section><section><h2 id=improved-structure>Improved Structure</h2><pre><code class=language-c>typedef struct LinkedList_Node *LinkedListNode;
 struct LinkedList_Node {
   int value;
   LinkedListNode next;
