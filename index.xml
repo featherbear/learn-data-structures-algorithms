@@ -2,14 +2,15 @@
 They are used in the implementation of other data structures (i.e. Stacks and Queues)
 Why Linked Lists Managing memory is important to program efficiency.
 Linked List Array Overhead Little None Access Sequential Random Size Variable Fixed Expansion Cheap Expensive Array Expansion (Low Load) |X|X|X| | | | | | | | | | | | | | | | | | |</description></item><item><title>Complexity</title><link>/complexity/</link><pubDate>Tue, 19 May 2020 23:34:32 +1000</pubDate><guid>/complexity/</guid><description>Complexity Complexity To develop efficient programs, it is important to analyse the complexity of our programs and its code.
-&amp;lt;span class='fragment '
 Complexity is a measure of how well a program performs.
-&amp;lt;span class='fragment '
 The main measures of complexity, is time complexity and space complexity
 We express complexity in Big-O notation.
 Constant (BEST) - $O(1)$
 Logarithmic - $O(log\ n)$
-Linear - $O(n)$</description></item><item><title>Abstract Data Types</title><link>/abstract-data-types/</link><pubDate>Tue, 19 May 2020 23:15:30 +1000</pubDate><guid>/abstract-data-types/</guid><description>Abstract Data Types (ADT) Abstract Data Types (ADT) An abstract data type is a struct, whose definition is not exposed to the user.
+Linear - $O(n)$
+n-log-n - $O(n\ log\ n)$
+Quadratic - $O(n^2)$
+Cubic - $O(n^3)$</description></item><item><title>Abstract Data Types</title><link>/abstract-data-types/</link><pubDate>Tue, 19 May 2020 23:15:30 +1000</pubDate><guid>/abstract-data-types/</guid><description>Abstract Data Types (ADT) Abstract Data Types (ADT) An abstract data type is a struct, whose definition is not exposed to the user.
 This is useful for a couple of different reasons
 Prevents internal data from being modified unsafely Provides functions which safely use the struct Allows implementation without affecting the user Abstract Data Types To define an ADT we typedef our struct definition.</description></item><item><title>Custom Data Types (Structs)</title><link>/custom-data-types-structs/</link><pubDate>Tue, 19 May 2020 23:12:48 +1000</pubDate><guid>/custom-data-types-structs/</guid><description>Custom Data Types (Structs) Custom Data Types (Structs) All forms of digital data (strings, integers, chars, floats, etc&amp;hellip;) are ultimately all just 1s and 0s in the system.
 Their data type is what allows their binary information to be interpreted in different meanings.

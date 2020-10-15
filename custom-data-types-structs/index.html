@@ -8,15 +8,14 @@ char address_1[] = &quot;1234 Street St&quot;;
 char name_2[] = &quot;Jane Smith&quot;;
 int age_2 = 25;
 char address_2[] = &quot;555 Main St&quot;;
-</code></pre><p>&lt;span class='fragment '</p><blockquote></blockquote><p>This looks like it can grow out of hand…</span></p></section></section><section data-noprocess data-shortcode-slide data-transition=fade><h2 id=custom-data-types-structs-3>Custom Data Types (Structs)</h2><p>We can create a data structure in C using a <code>struct</code>.</p><blockquote><pre><code class=language-c></code></pre></blockquote><p>struct structure_name {
+</code></pre><p><span class=fragment>This looks like it can grow out of hand…</span></p></section></section><section data-noprocess data-shortcode-slide data-transition=fade><h2 id=custom-data-types-structs-3>Custom Data Types (Structs)</h2><p>We can create a data structure in C using a <code>struct</code>.</p><blockquote><pre><code class=language-c></code></pre></blockquote><p>struct structure_name {
 char your;
 int data;
 char here[];
 };</p><pre><code>
 
 
-<span class=fragment>
-  <p>For example</p>
+<span class=fragment><p>For example</p>
 <pre><code class=language-c>struct Person {        // Create a type 'struct Person'
     char name[30];     // Create a string variable
     int age;           // Create an age variable
@@ -84,10 +83,7 @@ int age;
 char address[100];
 };</p><pre><code>
 What is the size of `struct Person`?
-<p>&lt;span class='fragment '
-&gt;
-&lt;code&gt;sizeof(struct Person) == 134&lt;/code&gt;
-&lt;/span&gt;</p>
+<p>&lt;span class='fragment ' &gt;&lt;code&gt;sizeof(struct Person) == 134&lt;/code&gt;&lt;/span&gt;</p>
 </section><section>
 <p>&gt; ```c
 struct Person {
@@ -95,7 +91,7 @@ char* name;
 int age;
 char* address;
 };
-</code></pre></p><p>What is the size of <code>struct Person</code>?</p><p>&lt;span class='fragment '</p><blockquote></blockquote><p><code>sizeof(struct Person) == 12</code></span></p></section></section><section><h2 id=struct-operations>Struct Operations</h2><p>When creating functions that <u>modify</u> <code>struct</code>s, we must remember to <u>pass it by reference</u>.<br>Otherwise changes will not be saved.</p><pre><code class=language-c>// Pass by reference
+</code></pre></p><p>What is the size of <code>struct Person</code>?</p><p><span class=fragment><code>sizeof(struct Person) == 12</code></span></p></section></section><section><h2 id=struct-operations>Struct Operations</h2><p>When creating functions that <u>modify</u> <code>struct</code>s, we must remember to <u>pass it by reference</u>.<br>Otherwise changes will not be saved.</p><pre><code class=language-c>// Pass by reference
 void set_age(struct Person *person, int new_age) {
     person-&gt;age = new_age;   // This is fine
     (*person).age = new_age; // This is also fine

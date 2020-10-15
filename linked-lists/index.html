@@ -271,7 +271,7 @@ LinkedListNode createLinkedListNode(int value);
 
     free(container);
 }
-</code></pre><p>Why shouldn&rsquo;t we do it this way?</p><p>&lt;span class='fragment '</p><blockquote></blockquote><p>As we’ve released the memory for <code>cur</code>,<br><code>cur->next</code> will be gibberish</span></p></section></section><section><h2 id=sort>Sort</h2><ul><li>Bubble Sort (By changing value)</li><li>Bubble Sort (By changing reference)</li></ul></section><section><h2 id=merge>Merge</h2><p>Implement a linked list function that merges two linked lists together.</p></section><section><h2 id=complexity-analysis>Complexity Analysis</h2><p>// Calculate these!</p></section><section><h2 id=improved-structure>Improved Structure</h2><pre><code class=language-c>typedef struct LinkedList_Node *LinkedListNode;
+</code></pre><p>Why shouldn&rsquo;t we do it this way?</p><p><span class=fragment>As we’ve released the memory for <code>cur</code>,<br><code>cur->next</code> will be gibberish</span></p></section></section><section><h2 id=sort>Sort</h2><ul><li>Bubble Sort (By changing value)</li><li>Bubble Sort (By changing reference)</li></ul></section><section><h2 id=merge>Merge</h2><p>Implement a linked list function that merges two linked lists together.</p></section><section><h2 id=complexity-analysis>Complexity Analysis</h2><p>// Calculate these!</p></section><section><h2 id=improved-structure>Improved Structure</h2><pre><code class=language-c>typedef struct LinkedList_Node *LinkedListNode;
 struct LinkedList_Node {
   int value;
   LinkedListNode next;
