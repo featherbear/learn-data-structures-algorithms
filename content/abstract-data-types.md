@@ -46,8 +46,8 @@ Person p = { ... };
 As it is very common to pass <u>data by reference</u>, it is recommended to make ADT definitions a pointer.
 
 > ```c
-typedef struct Person *Person;
-```
+> typedef struct Person *Person;
+> ```
 
 This way whenever we use `Person`, we are defining a pointer to a `struct Person`.
 
@@ -106,11 +106,11 @@ int get_age(struct Person *p) {
 Without knowing the content of the `.c` source file, we can use the functions declared in the header.
 
 > ```c
-/* Person.h */
-typedef struct Person *Person;
-char *get_name(Person p);
-int get_age(Person p);
-```
+> /* Person.h */
+> typedef struct Person *Person;
+> char *get_name(Person p);
+> int get_age(Person p);
+> ```
 
 ```c
 #include <Person.h>

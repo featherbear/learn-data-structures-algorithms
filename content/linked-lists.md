@@ -39,16 +39,16 @@ _Managing memory is important to program efficiency._
 ### Array Expansion (Low Load)
 
 > ```
-|X|X|X| | | | | | | | | | | | | | | | | | |
-```
+> |X|X|X| | | | | | | | | | | | | | | | | | |
+> ```
 
 ```c
 char *X = malloc(3); // Allocate 3 bytes for X
 X = realloc(X, 5); // Request 5 bytes for X
 ```
 > ```
-|X|X|X|X|X| | | | | | | | | | | | | | | | |
-```
+> |X|X|X|X|X| | | | | | | | | | | | | | | | |
+> ```
 
 The additional two bytes were assigned in place, good.
 
@@ -59,8 +59,8 @@ The additional two bytes were assigned in place, good.
 ### Array Expansion (Medium Load)
 
 > ```
-|X|X|X|O|O|O|O|O| | | | | | | | | | | | | |
-```
+> |X|X|X|O|O|O|O|O| | | | | | | | | | | | | |
+> ```
 
 ```c
 char *X = malloc(3); // Allocate 3 bytes for X
@@ -69,8 +69,8 @@ X = realloc(X, 5); // Request 5 bytes for X
 ```
 
 > ```
-| | | |O|O|O|O|O|X|X|X|X|X| | | | | | | | |
-```
+> | | | |O|O|O|O|O|X|X|X|X|X| | | | | | | | |
+> ```
 
 The original location did not have enough free contiguous space. Location was moved.  
 Data has to be copied to the new location.
@@ -82,8 +82,8 @@ Data has to be copied to the new location.
 ### Array Expansion (High Load)
 
 > ```
-|X|X|X|O|O|O|O|O|O|O|O|O|O|O|O|O|O| | | | |
-```
+> |X|X|X|O|O|O|O|O|O|O|O|O|O|O|O|O|O| | | | |
+> ```
 
 ```c
 char *X = malloc(3); // Allocate 3 bytes for X
@@ -103,8 +103,8 @@ The program will crash!
 ### Linked List Expansion (High Load)
 
 > ```
-|X|x|X|x|O|O|O|O|O|O|O|O| | |Y| | |Z|Z| | |
-```
+> |X|x|X|x|O|O|O|O|O|O|O|O| | |Y| | |Z|Z| | |
+> ```
 
 ```c
 LinkedList X = new_linked_list(2); // Create a linked list
@@ -115,8 +115,8 @@ add_nodes(X, 3); // Request 3 more nodes for X
 ```
 
 > ```
-|X|x|X|x|O|O|O|O|O|O|O|O|X|x|Y|X|x|Z|Z|X|x|
-```
+> |X|x|X|x|O|O|O|O|O|O|O|O|X|x|Y|X|x|Z|Z|X|x|
+> ```
 
 With a linked list, our data does not need to be stored in the same location.
 

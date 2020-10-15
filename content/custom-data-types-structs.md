@@ -66,12 +66,12 @@ char address_2[] = "555 Main St";
 We can create a data structure in C using a `struct`.
 
 > ```c
-struct structure_name {
-    char your;
-    int data;
-    char here[];
-};
-```
+> struct structure_name {
+>     char your;
+>     int data;
+>     char here[];
+> };
+> ```
 
 {{% fragment %}}For example
 ```c
@@ -97,35 +97,35 @@ A `struct` is purely a data structure whereas an object is 'alive' and can perfo
 ## Using structs
 
 > ```c
-struct Person {
-    char name[30];
-    int age;
-    char address[100];
-};
-```
+> struct Person {
+>     char name[30];
+>     int age;
+>     char address[100];
+> };
+> ```
 
 {{% section %}}To define a variable with our Person data type
 
 > ```c
-struct Person p;
-
-// We can then initialise values  
-p.name = "John Citizen";
-p.age = 30;
-p.address= "1234 Street St";
-```
+> struct Person p;
+> 
+> // We can then initialise values  
+> p.name = "John Citizen";
+> p.age = 30;
+> p.address= "1234 Street St";
+> ```
 
 ---
 
 We can also define and assign our values together
 
 > ```c
-struct Person p = {
-    .age = 30,
-    .name = "John Citzen",
-    .address = "1234 Street St"
-};
-```
+> struct Person p = {
+>     .age = 30,
+>     .name = "John Citzen",
+>     .address = "1234 Street St"
+> };
+> ```
 
 Note: We prepend a `.` before each variable name
 
@@ -134,10 +134,10 @@ Note: We prepend a `.` before each variable name
 If our data values are declared in the same order as they are defined, then we can do this
 
 > ```c
-struct Person p = {
-    "John Citzen", 30, "1234 Street St"
-};
-```
+> struct Person p = {
+>     "John Citzen", 30, "1234 Street St"
+> };
+> ```
 
 {{% /section %}}
 
@@ -146,12 +146,12 @@ struct Person p = {
 ## Accessing structs
 
 > ```c
-struct Person p = {
-    .name = "John Citzen",
-    .age = 30,
-    .address = "1234 Street St"
-};
-```
+> struct Person p = {
+>     .name = "John Citzen",
+>     .age = 30,
+>     .address = "1234 Street St"
+> };
+> ```
 
 We can access a values from the struct
 
@@ -170,12 +170,12 @@ The size of a struct is the sum of its component sizes.
 {{% section %}}
 
 > ```c
-struct Person {
-    char name[30];
-    int age;
-    char address[100];
-};
-```
+> struct Person {
+>     char name[30];
+>     int age;
+>     char address[100];
+> };
+> ```
 
 What is the size of `struct Person`?
 {{%fragment%}}`sizeof(struct Person) == 134`{{%/fragment%}}
@@ -183,12 +183,12 @@ What is the size of `struct Person`?
 ---
 
 > ```c
-struct Person {
-    char* name;
-    int age;
-    char* address;
-};
-```
+> struct Person {
+>     char* name;
+>     int age;
+>     char* address;
+> };
+> ```
 
 What is the size of `struct Person`?
 {{%fragment%}}`sizeof(struct Person) == 12`{{%/fragment%}}
