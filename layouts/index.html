@@ -36,8 +36,14 @@
       <div class="items columns is-desktop is-centered is-multiline is-vcentered">
         {{ range sort .Site.RegularPages.ByDate }}
         <div data-title="{{.Title}}" class="item column is-one-quarter">
-          <a href="{{ .Permalink }}">
-            <p class="notification is-info" {{ if (isset .Params "tilecolour" ) }} style="background-color: {{ print .Params.tilecolour | safeCSS }}" {{ end }}>
+          <a href="{{ .RelPermalink }}">
+            <p class="notification is-info" 
+              {{ if (isset .Params "tilecolour" ) }}
+                style="background-color: {{ .Params.tilecolour | safeCSS }}"
+              {{ else if and .Site.Params.colouriseSections .Section }}
+                style="background-color: #{{ substr (.Section | md5) 0 6 | safeCSS }}"
+              {{ end }}
+            >
               {{.Title}}
               <!-- TODO: Other meta (date, tags, category) -->
             </p>

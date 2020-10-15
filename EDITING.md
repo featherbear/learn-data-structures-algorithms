@@ -12,4 +12,4 @@ When the post is finalised, remove the `draft: true` property from the front mat
 # Previewing your posts
 
 To preview the public view, run `hugo server`  
-To preview draft post as well, run `hugo server -D`  
+To preview draft post as well, run `hugo server -DEF`  
